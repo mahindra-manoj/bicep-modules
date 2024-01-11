@@ -62,7 +62,7 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2022-11-15' = {
   }
 }
 
-module cosPe '../PrivateEndpoint/pe.bicep' = {
+module cosPe '../PrivateEndpoint/module.bicep' = {
   name: 'DeployCosDBPrivateEndpoint'
   params: {
     groupId: 'sql'

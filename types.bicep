@@ -1,43 +1,31 @@
 @export()
+@description('User-defined data type used by Tags parameter.')
 type tagsObject = {
   @description('Environment being deployed.')
-  Env: ('Dev' | 'QA' | 'CAT' | 'PROD')
+  Environment: ('Dev' | 'QA' | 'UAT' | 'Prod')?
 
-  @description('App Name.')
-  App: string
+  @description('Optional. Application name.')
+  'Application Name': string?
 
-  @description('Optional. Cost Center of the environmnet.')
-  CostCenter: string?
+  @description('Optional. Cost Center.')
+  'Cost Center': string?
 }
 
 @export()
-type routeTable = {
-  @description('NamePrefix of the Route table')
+@description('User-defined data type used by routes parameter within Route Table parameter.')
+type routes = {
+  @description('Name of the route.')
   name: string
 
-  @description('Azure region where the resource will be deployed.')
-  location: ('CanadaCentral' | 'CanadaEast')
+  @description('Next Hop Type of the route.')
+  nexHopType: ('Internet' | 'None' | 'VirtualAppliance' | 'VnetLocal' | 'VirtualNetworkGateway')
 
-  @description('If true, disables route propogation for the route table.')
-  disableRoutePropogation: (false | true)
+  @description('Destination address prefix of the route table.')
+  addressPrefix: string
 
-  @description('Routes to be added to the table.')
-  routes: {
-    @description('Name of the route.')
-    name: string
-
-    @description('Next Hop Type of the route.')
-    nexHopType: ('Internet' | 'None' | 'VirtualAppliance' | 'VnetLocal' | 'VirtualNetworkGateway')
-
-    @description('Destination address prefix of the route table.')
-    addressPrefix: string
-
-    @description(
-      'If the nextHopType is \'VirtualAppliance\', add the firewall IP address as the next hop IP address.'
-    )
-    nextHopIpAddress: string?
-  }[]?
-}
+  @description('If the nextHopType is \'VirtualAppliance\', add the firewall IP address as the next hop IP address.')
+  nextHopIpAddress: string?
+}[]?
 
 @export()
 @discriminator('ruleCollectionType')
@@ -179,4 +167,31 @@ type subnetArray = {
     @description('Service Endpoint Type.')
     service: string
   }[]?
+}[]
+
+// Custom data type used within key vault.
+@export()
+@description('User-defined data type used by the param named \'accessPolicies\' within key vault module.')
+type accessPolicies = {
+  @description('Optional.The object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies.')
+  objectId: string?
+  @description('Permissions the identity has for keys, secrets and certificates.')
+  permissions: {
+    @description('Permissions to certificates.')
+    certificates: ('all' | 'backup' | 'create' | 'delete' | 'deleteissuers' | 'get' | 'getissuers' | 'import' | 'list' | 'listissuers' | 'managecontacts' | 'manageissuers' | 'purge' | 'recover' | 'restore' | 'setissuers' | 'update')[]?
+    @description('Permissions to Keys.')
+    keys: ('all' | 'backup' | 'create' | 'decrypt' | 'delete' | 'encrypt' | 'get' | 'getrotationpolicy' | 'import' | 'list' | 'purge' | 'recover' | 'release' | 'restore' | 'rotate' | 'setrotationpolicy' | 'sign' | 'unwrapKey' | 'update' | 'verify' | 'wrapKey')[]?
+    @description('Permissions to Secrets.')
+    secrets: ('all' | 'backup' | 'delete' | 'get' | 'list' | 'purge' | 'recover' | 'restore' | 'set')[]?
+  }?
+}[]
+
+// custom data type used by the Private DNS zone module.
+@export()
+@description('User-defined data type used by virtualNetworks.')
+type virtualNetworks = {
+  @description('Name of the Virtual network that needs to be linked with the DNS zone.')
+  name: string
+  @description('RG where the VNET resides.')
+  resourceGroup: string?
 }[]

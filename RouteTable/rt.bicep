@@ -1,26 +1,46 @@
 // route table bicep module
-import * as mahi from '../types.bicep'
+import { routes as array, tagsObject as object } from '../types.bicep'
 
-targetScope = 'resourceGroup'
+@description('Optional. Whether to disable the routes learned by BGP on that route table. True means disable. Value defaults to false.')
+param disableBgpRoutePropagation bool = false
 
-param routeTableConfig mahi.routeTable
+@description('Azure region where the route table needs to be created.')
+param location string = resourceGroup().location
 
-param tags mahi.tagsObject
+@description('Name of the route table resource to be created.')
+param nameSuffix string
 
+@description('Routes to be added.')
+param routes array
 
+@description('Optional. Tags to be applied.')
+param tags object = {}
+
+// create route table
 resource rt 'Microsoft.Network/routeTables@2023-05-01' = {
-  name: routeTableConfig.name
-  location: routeTableConfig.location
-  tags: tags
+  name: toLower('rt-${nameSuffix}')
+  location: location
+  tags: tags ?? null
   properties: {
-    disableBgpRoutePropagation: routeTableConfig.disableRoutePropogation
-    routes: [for each in (routeTableConfig.routes ?? []): {
-      name: each.name
+    disableBgpRoutePropagation: disableBgpRoutePropagation
+    routes: [for each in (routes ?? []): {
+      name: each.?name
       properties: {
-        nextHopType: each.nextHopType
-        addressPrefix: each.addressPrefix
+        nextHopType: each.?nextHopType
+        addressPrefix: each.?addressPrefix
         nextHopIpAddress: each.?nextHopIpAddress
       }
     }]
   }
 }
+
+//outputs
+
+@description('Resource Id of the route table created by the module.')
+output id string = rt.id
+
+@description('Name of the route table deployed.')
+output name string = rt.name
+
+// assertions
+assert routeTableName = !contains(nameSuffix, 'rt') || !contains(nameSuffix, 'RT')

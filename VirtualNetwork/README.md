@@ -6,7 +6,7 @@ Bicep module to deploy Virtual Network.
 
 This module deploys a Virtual Network, and optionally configures diagnostic settings and assigns __CanNotDelete__ lock to the vnet deployed.
 
-It will add __-vnet__ as the suffix to the VNET resource.
+It will add __vnet-__ as the prefix to the VNET resource.
 
 ## Scope
 
