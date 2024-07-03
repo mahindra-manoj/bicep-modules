@@ -12,15 +12,13 @@
   },
   "experimentalFeaturesEnabled": {
     "assertions": true,
-    "asserts": true,
-    "compileTimeImports": true,
     "dynamicTypeLoading": true,
     "providerRegistry": true,
-    "publishSource": true,
     "resourceTypedParamsAndOutputs": true,
     "sourceMapping": true,
     "symbolicNameCodegen": true,
     "testFramework": true,
-    "userDefinedFunctions": true
+    "resourceDerivedTypes": true,
+    "extensibility": true
   }
 }

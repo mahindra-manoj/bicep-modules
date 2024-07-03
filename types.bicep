@@ -134,6 +134,8 @@ type subnetArray = {
   name: string?
   @description('Address Prefix of the subnet.')
   addressPrefix: string?
+  @description('If false, default outbound connectivity for all VMs in the subnet will be disabled.')
+  defaultOutboundAccess: (false | true)
   @description('Optional. The name of the service to whom the subnet should be delegated (e.g. Microsoft.Sql/servers).')
   delegations: {
     @description('Name of the delegation. For example, \'AppServicePlan\'.')
@@ -188,10 +190,11 @@ type accessPolicies = {
 
 // custom data type used by the Private DNS zone module.
 @export()
-@description('User-defined data type used by virtualNetworks.')
+@description('User-defined data type used by the parameter named Private DNS zone bicep module.')
 type virtualNetworks = {
   @description('Name of the Virtual network that needs to be linked with the DNS zone.')
   name: string
   @description('RG where the VNET resides.')
   resourceGroup: string?
 }[]
+
