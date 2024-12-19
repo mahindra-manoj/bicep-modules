@@ -1,14 +1,31 @@
 // Private Dns Zone bicep module
 
-import { tagsObject, virtualNetworks as array } from '../types.bicep'
+import { Tags, VirtualNetworks } from '../types.bicep'
 
+@allowed([
+  'privatelink.azconfig.io'
+  'privatelink.azurewebsites.net'
+  'privatelink.blob.core.windows.net'
+  'privatelink.cosmos.azure.com'
+  'privatelink.database.windows.net'
+  'privatelink.file.core.windows.net'
+  'privatelink.queue.core.windows.net'
+  'privatelink.table.core.windows.net'
+  'privatelink.servicebus.windows.net'
+  'privatelink.vaultcore.azure.net'
+  'privatelink.redis.cache.windows.net'
+  'privatelink.search.windows.net'
+  'privatelink.datfactory.azure.net'
+  'privatelink.eventgrid.azure.net'
+  'privatelink.eventhub.azure.net'
+])
 @description('Name of the Private DNS Zone to be created.')
 param name string
 
 @description('Optional. Tags to be applied to the Private DNS Zone resource,')
-param tags tagsObject = {}
+param tags Tags = {}
 
-@description('List of virtual Networks to be linked with the VNET.')
+@description('List of virtual Networks to be linked with the Private DNS Zone.')
 param virtualNetworks array
 
 // get vnet resource

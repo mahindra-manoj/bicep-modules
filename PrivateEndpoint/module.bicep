@@ -29,13 +29,13 @@ param tags object = {}
 @description('Name of the VNET where the private endpoint needs to be deployed.')
 param vnetName string
 
-@description('RG where the VNET where the private endpoint will be deployed.')
-param vnetRGName string
+@description('Optinal. RG where the VNET used by the private endpoint resides. Defaults to rg where the key vault resource is being deployed.')
+param vnetRGName string = resourceGroup().name
 
 // get subnet resource
-resource epSnet 'Microsoft.Network/virtualNetworks/subnets@2023-05-01' existing = {
+resource subnet 'Microsoft.Network/virtualNetworks/subnets@2023-05-01' existing = {
   name: '${vnetName}/${subnetName}'
-  scope: empty(vnetRGName) ? resourceGroup() : resourceGroup(vnetRGName)
+  scope: resourceGroup(vnetRGName)
 }
 
 // create Private Endpoint
@@ -57,18 +57,18 @@ resource pe 'Microsoft.Network/privateEndpoints@2023-05-01' = {
       }
     ]
     subnet: {
-      id: epSnet.id
+      id: subnet.id
     }
   }
   //register the private endpoint with the Private DNS zone
-  resource peDnsZone 'privateDnsZoneGroups' = {
+  resource peDnsZone 'privateDnsZoneGroups' = if (!empty(privateDnsZoneId)) {
     name: 'default'
     properties: {
       privateDnsZoneConfigs: [
         {
           name: dnsZoneGroupConfigName
           properties: {
-            privateDnsZoneId: privateDnsZoneId
+            privateDnsZoneId: !empty(privateDnsZoneId) ? privateDnsZoneId : 'dummy'
           }
         }
       ]
@@ -87,7 +87,9 @@ output name string = pe.name
 output ipAddress string = pe.properties.customDnsConfigs[0].ipAddresses[0]
 
 @description('Secondary private IP address of the private endpoint.')
-output secondaryIpAddress string = retrieveSecondaryPrivateIpAddress ? pe.properties.customDnsConfigs[1].ipAddresses[0] : ''
+output secondaryIpAddress string = retrieveSecondaryPrivateIpAddress
+  ? pe.properties.customDnsConfigs[1].ipAddresses[0]
+  : ''
 
 // assertions
 assert privateEndpointName = !contains(nameSuffix, 'pe') || !contains(nameSuffix, 'PE')

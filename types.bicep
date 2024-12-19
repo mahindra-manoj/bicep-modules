@@ -1,6 +1,6 @@
 @export()
 @description('User-defined data type used by Tags parameter.')
-type tagsObject = {
+type Tags = {
   @description('Environment being deployed.')
   Environment: ('Dev' | 'QA' | 'UAT' | 'Prod')?
 
@@ -13,7 +13,7 @@ type tagsObject = {
 
 @export()
 @description('User-defined data type used by routes parameter within Route Table parameter.')
-type routes = {
+type Routes = {
   @description('Name of the route.')
   name: string
 
@@ -29,9 +29,9 @@ type routes = {
 
 @export()
 @discriminator('ruleCollectionType')
-type FirewallPolicyRuleCollection = filterRuleCollection | natRuleCollection
+type FirewallPolicyRuleCollection = FilterRuleCollection | NatRuleCollection
 
-type filterRuleCollection = {
+type FilterRuleCollection = {
   @description('Rule collection type.')
   ruleCollectionType: 'FirewallPolicyFilterRuleCollection'
 
@@ -52,7 +52,7 @@ type filterRuleCollection = {
   rules: FirewallPolicyRule[]
 }
 
-type natRuleCollection = {
+type NatRuleCollection = {
   @description('Rule collection type.')
   ruleCollectionType: 'FirewallPolicyNatRuleCollection'
 
@@ -70,13 +70,13 @@ type natRuleCollection = {
   priority: int
 
   @description('List of rules included in a rule collection.')
-  rules: natRuleType[]
+  rules: NatRuleType[]
 }
 
 @discriminator('ruleType')
-type FirewallPolicyRule = networkRule | applicationRule
+type FirewallPolicyRule = NetworkRule | ApplicationRule
 
-type networkRule = {
+type NetworkRule = {
   ruleType: 'NetworkRule'
   description: string?
   destinationAddresses: array
@@ -89,7 +89,7 @@ type networkRule = {
   sourceIpGroups: array?
 }
 
-type applicationRule = {
+type ApplicationRule = {
   ruleType: 'ApplicationRule'
   description: string?
   destinationAddresses: array
@@ -113,7 +113,7 @@ type applicationRule = {
   sourceIpGroups: array?
 }
 
-type natRuleType = {
+type NatRuleType = {
   ruleType: 'NatRule'
   description: string?
   destinationAddresses: array
@@ -129,39 +129,37 @@ type natRuleType = {
 
 // custom data type for creating subnets
 @export()
-type subnetArray = {
+type Subnets = {
   @description('Name of the subnet to be created.')
-  name: string?
+  name: string
   @description('Address Prefix of the subnet.')
-  addressPrefix: string?
-  @description('If false, default outbound connectivity for all VMs in the subnet will be disabled.')
-  defaultOutboundAccess: (false | true)
+  addressPrefix: string
+  @description('Optional. If false, default outbound connectivity for all VMs in the subnet will be disabled.')
+  defaultOutboundAccess: (false | true)?
   @description('Optional. The name of the service to whom the subnet should be delegated (e.g. Microsoft.Sql/servers).')
-  delegations: {
+  delegation: {
     @description('Name of the delegation. For example, \'AppServicePlan\'.')
     name: string
     @description('Service that needs to be delegated for the subnet. For example, \'Microsoft.Web/serverFarms\'')
     service: string
-  }[]?
+  }?
   @description('Optional. Reference to the NAT gateway resource that will need to be associated with the subnet.')
   natGateway: {
     @description('Resource ID of the NAT Gateway.')
     id: string
   }?
-  @description('Optional. Reference to the NSG resource that will need to be associated with the subnet.')
-  nsg: {
-    @description('Resource Id of the NSG.')
-    id: string
-  }?
-  @description('Optional. Enable or Disable apply network policies on private end point in the subnet.')
-  privateEndpointNetworkPolicies: ('Enabled' | 'Disabled')?
-  @description('Optional. Enable or Disable apply network policies on private link service in the subnet.')
+  @description('Optional. Name of the existing NSG resource that will need to be associated with the subnet.')
+  nsgName: string?
+  @description('Optional. RG where the NSG resource resides. This is only needed if the NSG resource is deployed in a rg different than the one where the VNET module is being deployed.')
+  nsgResourceGroupName: string?
+  @description('Optional. Applu network policies for the private endpoints in the subnet.')
+  privateEndpointNetworkPolicies: ('Enabled' | 'Disabled' | 'NetworkSecurityGroupEnabled' | 'RouteTableEnabled')?
+  @description('Optional. Apply network policies on private link services in the subnet.')
   privateLinkServiceNetworkPolicies: ('Enabled' | 'Disabled')?
-  @description('Optional. Reference to the route table resource that will be associated with the subnet.')
-  routeTable: {
-    @description('Resource id of the route table.')
-    id: string
-  }?
+  @description('Optional. Name of the existing route table resource that will need to be associated with the subnet.')
+  routeTableName: string?
+  @description('Optional. RG where the route table resource resides. This is only needed if the route table needs to be associated with the subnet and it resides in a rg different than the one where the VNET resource is being deployed.')
+  routeTableRGName: string?
   @description('Optional. Array of service endpoints.')
   serviceEndpoints: {
     @description('List of locations.')
@@ -174,15 +172,53 @@ type subnetArray = {
 // Custom data type used within key vault.
 @export()
 @description('User-defined data type used by the param named \'accessPolicies\' within key vault module.')
-type accessPolicies = {
+type AccessPolicies = {
   @description('Optional.The object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies.')
   objectId: string?
   @description('Permissions the identity has for keys, secrets and certificates.')
   permissions: {
     @description('Permissions to certificates.')
-    certificates: ('all' | 'backup' | 'create' | 'delete' | 'deleteissuers' | 'get' | 'getissuers' | 'import' | 'list' | 'listissuers' | 'managecontacts' | 'manageissuers' | 'purge' | 'recover' | 'restore' | 'setissuers' | 'update')[]?
+    certificates: (
+      | 'all'
+      | 'backup'
+      | 'create'
+      | 'delete'
+      | 'deleteissuers'
+      | 'get'
+      | 'getissuers'
+      | 'import'
+      | 'list'
+      | 'listissuers'
+      | 'managecontacts'
+      | 'manageissuers'
+      | 'purge'
+      | 'recover'
+      | 'restore'
+      | 'setissuers'
+      | 'update')[]?
     @description('Permissions to Keys.')
-    keys: ('all' | 'backup' | 'create' | 'decrypt' | 'delete' | 'encrypt' | 'get' | 'getrotationpolicy' | 'import' | 'list' | 'purge' | 'recover' | 'release' | 'restore' | 'rotate' | 'setrotationpolicy' | 'sign' | 'unwrapKey' | 'update' | 'verify' | 'wrapKey')[]?
+    keys: (
+      | 'all'
+      | 'backup'
+      | 'create'
+      | 'decrypt'
+      | 'delete'
+      | 'encrypt'
+      | 'get'
+      | 'getrotationpolicy'
+      | 'import'
+      | 'list'
+      | 'purge'
+      | 'recover'
+      | 'release'
+      | 'restore'
+      | 'rotate'
+      | 'setrotationpolicy'
+      | 'sign'
+      | 'unwrapKey'
+      | 'update'
+      | 'verify'
+      | 'wrapKey')[]?
     @description('Permissions to Secrets.')
     secrets: ('all' | 'backup' | 'delete' | 'get' | 'list' | 'purge' | 'recover' | 'restore' | 'set')[]?
   }?
@@ -191,10 +227,9 @@ type accessPolicies = {
 // custom data type used by the Private DNS zone module.
 @export()
 @description('User-defined data type used by the parameter named Private DNS zone bicep module.')
-type virtualNetworks = {
+type VirtualNetworks = {
   @description('Name of the Virtual network that needs to be linked with the DNS zone.')
   name: string
   @description('RG where the VNET resides.')
   resourceGroup: string?
 }[]
-

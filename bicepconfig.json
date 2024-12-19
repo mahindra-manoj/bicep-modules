@@ -13,12 +13,12 @@
   "experimentalFeaturesEnabled": {
     "assertions": true,
     "dynamicTypeLoading": true,
-    "providerRegistry": true,
     "resourceTypedParamsAndOutputs": true,
     "sourceMapping": true,
     "symbolicNameCodegen": true,
     "testFramework": true,
     "resourceDerivedTypes": true,
-    "extensibility": true
+    "extensibility": true,
+    "optionalModuleNames": true
   }
 }

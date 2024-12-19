@@ -4,7 +4,7 @@ Bicep module to deploy Virtual Network.
 
 ## Description
 
-This module deploys a Virtual Network, and optionally configures diagnostic settings and assigns __CanNotDelete__ lock to the vnet deployed.
+This module deploys a Virtual Network, and optionally configures diagnostic settings and assigns __CanNotDelete__ lock to the vnet deployed. You can also create a VNET resource
 
 It will add __vnet-__ as the prefix to the VNET resource.
 
@@ -14,19 +14,20 @@ It should be scoped to a resource group.
 
 ## Path
 
-The module is not published to a remote registry (such as Container registry).
+Path can only be determined once the module is published to a private registry (container registry).
 
 ## Parameters
 
 | Name | Type | Required | Description |
 | :--- | :--- | :------- | :---------- |
 | `cidr` | `string` | Yes | Address space of the VNET. |
-| `diagnosticSettingsWorkspaceId` | `string` | No | Resource Id of the log analytics workspace used to store diagnostic settings of the VNET. |
+| `logAnalyticsWorkspaceName` | `string` | No | Name of the log analytics workspace used to store diagnostic settings of the VNET. |
+| `logAnalyticsWorkspaceRGName` | `string` | No | RG where the log analytics workspace resource resides. |
 | `enableLocking` | `bool` | Yes | If true, __CannotDelete__ lock will be configured for the VNET.
 | `location` | `string` |  No | Azure region where the VNET will be created. Defaults to location of rg where the resource will be deployed. |
-| `namePrefix` | `string` | Yes | Azure region where the VNET will be created. Defaults to location of resource group. |
+| `nameSuffix` | `string` | Yes | Name suffix of the VNET resource resides. |
 | `subnets` | `subnetArray` | No | Subnets to be created. |
-| `tags` | `tagsObject` | No | Tags to be applied to the resource. |
+| `tags` | `object` | No | Tags to be applied to the resource. |
 
 ## Outputs
 
