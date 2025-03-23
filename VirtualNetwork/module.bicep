@@ -2,9 +2,6 @@ targetScope = 'resourceGroup'
 
 import { Subnets, VirtualNetworks } from '../types.bicep'
 
-// asserts
-assert vnetName = !startsWith(toLower(nameSuffix), 'vnet-')
-
 @description('Address space of the VNET resource.')
 param cidr string
 
@@ -14,10 +11,10 @@ param ddosProtectionPlan {
   name: string?
 
   @description('Optional. Resource Group where the ddos protection plan resource is deployed. Chose this if the rg is different than the one where VNET is being deployed.')
-  resourceGroup: string?
+  resourceGroup: resourceInput<'Microsoft.Resources/resourceGroups@2024-11-01'>.name?
 
   @description('Optioanal. Subscription Guid. This is only needed if the plan is deployed in a subscription different than the one where the VNET is being deployed.')
-  subscriptionId: string?
+  subscriptionId: resourceInput<'Microsoft.Subscription/subscriptionDefinitions@2017-11-01-preview'>.properties.subscriptionId?
 }?
 
 @description('Optional. If true, ddos protection plan needs to be associated. To attach a plan to VNET, ddosProtectionPlan should not be empty.')
@@ -34,22 +31,22 @@ param enableEncryption bool = false
 param enableLocking bool = false
 
 @description('Optional. Azure region where the VNET will be created. Defaults to location of resource group.')
-param location string = resourceGroup().location
+param location resourceInput<'Microsoft.Network/virtualNetworks@2024-05-01'>.location = resourceGroup().location
 
 @description('Optional. Name of the log analytics workspace that is used to store the diagnostic settings of the VNET.')
-param logAnalyticsWorkspaceName string = ''
+param logAnalyticsWorkspaceName resourceInput<'Microsoft.OperationalInsights/workspaces@2023-09-01'>.name?
 
 @description('Optional. Name of the Resource group where the log analytics workspace was deployed. Defaults to rg where the VNET will be created.')
-param logAnalyticsWorkspaceRGName string = resourceGroup().name
+param logAnalyticsWorkspaceRGName resourceInput<'Microsoft.Resources/resourceGroups@2024-11-01'>.name = resourceGroup().name
 
 @description('Name suffix of the Virtual Network resource being created. \'vnet-\' will be as the prefix.')
 param nameSuffix string
 
 @description('Optional. Name of the NAT gateway resource that needs to be associated with the subnets within the VNET resource being provisioned.')
-param natGatewayName string = ''
+param natGatewayName resourceInput<'Microsoft.Network/natGateways@2024-05-01'>.name?
 
 @description('Optional. RG where the NAT Gateway resource resides. Defaults to rg where the VNET resource is being deployed.')
-param natGatewayRGName string = resourceGroup().name
+param natGatewayRGName resourceInput<'Microsoft.Resources/resourceGroups@2024-11-01'>.name = resourceGroup().name
 
 @description('Optional. Subnets to be created. Defaults to [].')
 param subnets Subnets = []
@@ -68,13 +65,13 @@ resource ddosPlan 'Microsoft.Network/ddosProtectionPlans@2023-09-01' existing = 
 
 // Get log analytics workspace
 resource law 'Microsoft.OperationalInsights/workspaces@2023-09-01' existing = if (!empty(logAnalyticsWorkspaceName)) {
-  name: !empty(logAnalyticsWorkspaceName) ? logAnalyticsWorkspaceName : 'dummy'
+  name: logAnalyticsWorkspaceName ?? 'dummy'
   scope: resourceGroup(logAnalyticsWorkspaceRGName)
 }
 
 // Get NAT gateway resource
 resource nat 'Microsoft.Network/natGateways@2024-01-01' existing = if (!empty(natGatewayName)) {
-  name: !empty(natGatewayName) ? natGatewayName : 'dummy'
+  name: natGatewayRGName ?? 'dummy'
   scope: resourceGroup(natGatewayRGName)
 }
 
@@ -96,9 +93,11 @@ resource rt 'Microsoft.Network/routeTables@2024-01-01' existing = [
 
 // create vnet
 resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' = {
-  name: toLower('vnet-${nameSuffix}')
+  name: !startsWith(toLower(nameSuffix), 'vnet-')
+    ? toLower('vnet-${nameSuffix}')
+    : fail('Parameter nameSuffix should not start with \'vnet-\'. The module will add \'vnet-\' as the prefix.')
   location: location
-  tags: tags ?? null
+  tags: tags
   properties: {
     encryption: {
       enabled: enableEncryption

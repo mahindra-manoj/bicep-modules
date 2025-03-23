@@ -5,12 +5,12 @@ import { Subnets } from '../types.bicep'
 param subnets Subnets
 
 @description('Name of the VNET where the subnet(s) need to be created.')
-param vnetName string
+param virtualNetworkName resourceInput<'Microsoft.Network/virtualNetworks@2024-05-01'>.name
 
 // creaet subnet(s)
 resource snet 'Microsoft.Network/virtualNetworks/subnets@2023-05-01' = [
   for each in subnets: {
-    name: '${vnetName}/${each.name}'
+    name: '${virtualNetworkName}/${each.name}'
     properties: {
       addressPrefix: each.addressPrefix
       delegations: each.?delegations

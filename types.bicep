@@ -1,19 +1,9 @@
-@export()
-@description('User-defined data type used by Tags parameter.')
-type Tags = {
-  @description('Environment being deployed.')
-  Environment: ('Dev' | 'QA' | 'UAT' | 'Prod')?
-
-  @description('Optional. Application name.')
-  'Application Name': string?
-
-  @description('Optional. Cost Center.')
-  'Cost Center': string?
-}
+/////////// Custom data types developed for the Azure Bicep modules. ///////////
+/// These help provide intellisenese and type checking for the params that need complex data type within the Bicep modules. ///
 
 @export()
-@description('User-defined data type used by routes parameter within Route Table parameter.')
-type Routes = {
+@description('User-defined data type used by routes parameter within Route Table module.')
+type RouteTableRoutes = {
   @description('Name of the route.')
   name: string
 
@@ -25,8 +15,9 @@ type Routes = {
 
   @description('If the nextHopType is \'VirtualAppliance\', add the firewall IP address as the next hop IP address.')
   nextHopIpAddress: string?
-}[]?
+}[]
 
+///////////// Firewall Module Data type ///////////////////////////////
 @export()
 @discriminator('ruleCollectionType')
 type FirewallPolicyRuleCollection = FilterRuleCollection | NatRuleCollection
@@ -127,8 +118,9 @@ type NatRuleType = {
   translatedPort: string
 }
 
-// custom data type for creating subnets
+/////////////// custom data type for creating subnets ////////////////////////
 @export()
+@description('Custom data type used by the subnets parameter within the VNET module')
 type Subnets = {
   @description('Name of the subnet to be created.')
   name: string
@@ -232,4 +224,29 @@ type VirtualNetworks = {
   name: string
   @description('RG where the VNET resides.')
   resourceGroup: string?
+  @description('Optional. ID of the subscription where the VNET resides. This is only needed if the VNET is in a subscription different than the one where the DNS zone is being deployed. The value does not expect the resource ID format.')
+  subscriptionId: resourceInput<'Microsoft.Subscription/subscriptionDefinitions@2017-11-01-preview'>.properties.subscriptionId?
+}[]
+
+/////// Custom data type used by the param Security rules within the NSG module.
+@export()
+type NetworkSecurityGroupRules = {
+  @description('Name of the security rule to be created.')
+  name: string
+  @description('Whether the traffic is allowed or denied.')
+  access: ('Allow' | 'Deny')
+  @description('he direction of the rule. The direction specifies if rule will be evaluated on incoming or outgoing traffic.')
+  direction: ('Inbound' | 'Outbound')
+  @description('The priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each rule in the collection. The lower the priority number, the higher the priority of the rule.')
+  priority: int
+  @description('Network protocol this rule applies to.')
+  protocol: ('TCP' | 'UDP' | 'ICMP' | '*')
+  @description('The CIDR or source IP ranges. Asterisk (*) can also be used to match all IP addresses. Multiple IP ranges can be specified by separating them with a comma. Accepts Service tag as the source address prefix.')
+  sourceAddressPrefix: string
+  @description('The CIDR or destination IP ranges. Asterisk (*) can also be used to match all IP addresses. Multiple IP ranges can be specified by separating them with a comma. Accepts Service tag as the destination address prefix.')
+  destinationAddressPrefix: string
+  @description('Destination port or range. Asterisk (*) can also be used to match all ports. Multiple ports or ranges can be specified by separating them with a comma.')
+  destinationPortRange: string
+  @description('Optional. Description of the rule.')
+  description: string?
 }[]
