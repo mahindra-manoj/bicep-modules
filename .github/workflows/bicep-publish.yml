@@ -57,4 +57,4 @@ jobs:
         tenant-id: ${{ inputs.azure-tenant-id }}
         subscription-id: ${{ inputs.azure-subscription-id }}
     - name: Publish Bicep Module to ACR
-      run: az bicep publish --file ${{ inputs.bicep-file-path  }} --target "br:${{ inputs.registry-name }}.azurecr.io/${{ inputs.registry-path }} --with-source --force"
+      run: az bicep publish --file ${{ inputs.bicep-file-path  }} --target "br:${{ inputs.registry-name }}.azurecr.io/${{ inputs.registry-path }}" --with-source --force
