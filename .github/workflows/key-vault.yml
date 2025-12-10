@@ -1,0 +1,15 @@
+name: Publish Key Vault Bicep module
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    publish-module:
+        uses: ./.github/workflows/bicep-publish.yml
+        with:
+            azure-client-id: 4efea1b2-111b-464b-aa2f-efa403e4c7d4
+            bicep-file-path: ./KeyVault/module.bicep
+            registry-name: mahizacr
+            registry-path: keyvault/vault:1.0
