@@ -7,23 +7,29 @@ on:
         type: string
         description: Optional. Client ID of the managed identity or Entra ID App used to authenticate to Azure. Defaults to Bicep-Publish-App.
         default: 4efea1b2-111b-464b-aa2f-efa403e4c7d4
-        
+
+      azure-subscription-id:
+        required: false
+        type: string
+        description: Azure Subscription ID
+        default: 830248f2-52b1-4955-8d2b-f8e3f22a2bbb
+
       azure-tenant-id:
         required: false
         type: string
         description: Azure Tenant ID
         default: f6d5b8fa-99ce-4d79-b064-fd17d82f3568
-        
-      bicep-file-path: 
+
+      bicep-file-path:
         required: true
         type: string
         description:  Path for the bicep file that needs to be published as module
-        
-      registry-name: 
+
+      registry-name:
         required: true
         type: string
         description: Name of the container registry where the bicep modules will be published
-        
+
       registry-path:
         required: true
         type: string
@@ -42,12 +48,6 @@ jobs:
       with:
         client-id: ${{ inputs.azure-client-id }}
         tenant-id: ${{ inputs.azure-tenant-id }}
+        subscription-id: ${{ inputs.azure-subscription-id }}
     - name: Publish Bicep Module to ACR
       run: az bicep publish --file ${{ inputs.bicep-file-path  }} --target "br:${{ inputs.registry-name }}.azurecr.io/${{ inputs.registry-path }} --with-source --force"
-      
-      
-          
-    
-    
-  
-  
