@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Run Bicep Snapshot
-        shell: pswh
+        shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
           $failed     = $false
