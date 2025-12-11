@@ -1,12 +1,13 @@
 name: Publish Key Vault Bicep module
 
 on:
-    push:
-        branches:
-            - main
-        paths:
-            - 'KeyVault/**'
-            - '.github/workflows/key-vault.yml'
+    workflow_dispatch:
+#    push:
+#        branches:
+#            - main
+#        paths:
+#            - 'KeyVault/**'
+#            - '.github/workflows/key-vault.yml'
 
 jobs:
     key-vault:
