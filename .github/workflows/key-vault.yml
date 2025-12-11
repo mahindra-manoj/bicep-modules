@@ -9,7 +9,7 @@ on:
             - '.github/workflows/key-vault.yml'
 
 jobs:
-    publish-module:
+    key-vault:
         permissions:
             contents: read
             id-token: write
