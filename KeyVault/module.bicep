@@ -57,6 +57,9 @@ param roleAssignments RoleAssignment[]?
 param virtualNetworkRules ResourceFirewallRules?
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b7cdcae (Updated.)
 var defaultRoleAssignment object[] = [
   {
     principalName: deployer().userPrincipalName
@@ -65,8 +68,11 @@ var defaultRoleAssignment object[] = [
   }
 ]
 
+<<<<<<< HEAD
 =======
 >>>>>>> 05028f2 (Commit changes made to bicep modules)
+=======
+>>>>>>> b7cdcae (Updated.)
 resource dns_zone 'Microsoft.Network/privateDnsZones@2024-06-01' existing = if (privateEndpoint != null) {
   name: 'privatelink.vaultcore.azure.net'
   scope: resourceGroup()
@@ -123,20 +129,6 @@ resource kv 'Microsoft.KeyVault/vaults@2025-05-01' = {
         }
       ]
     }
-  }
-}
-
-module bicepdeploy_clientid_kvrbac '../KeyVaultRBAC/module.bicep' = {
-  name: 'AssignKVAdmin_${kv.name}_${replace(trim(deployer().userPrincipalName), '@', '')}'
-  params: {
-    keyVaultName: kv.name
-    roleAssignments: [
-      {
-        principalName: deployer().userPrincipalName
-        principalType: 'ServicePrincipal'
-        roleName: 'Key Vault Administrator'
-      }
-    ]
   }
 }
 
