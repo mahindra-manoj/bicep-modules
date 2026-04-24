@@ -10,6 +10,8 @@ metadata description = '''
 
 import { RoleAssignment } from '../utilities.bicep'
 
+import { RoleAssignment, roleAssignmentName } from '../utilities.bicep'
+
 @description('Name of the key vault on which the role assignment needs to be made.')
 param keyVaultName string
 

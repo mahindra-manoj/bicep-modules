@@ -22,6 +22,7 @@ jobs:
             contents: read
             id-token: write
         uses: ./.github/workflows/bicep-publish.yml
+<<<<<<< HEAD
         secrets:
             azure-client-id: ${{ secrets.ClIENT_ID }}
             azure-tenant-id: ${{ secrets.TENANT_ID }}
@@ -29,4 +30,10 @@ jobs:
         with:
             bicep-file-path: ./VirtualNetwork/
             registry-name: crmahi
+=======
+        with:
+            azure-client-id: 4efea1b2-111b-464b-aa2f-efa403e4c7d4
+            bicep-file-path: ./VirtualNetwork/module.bicep
+            registry-name: mahicr
+>>>>>>> 05028f2 (Commit changes made to bicep modules)
             registry-path: network/vnet:1.0
