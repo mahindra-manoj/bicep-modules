@@ -2,6 +2,7 @@ name: Publish Key Vault Bicep module
 
 on:
     workflow_dispatch:
+<<<<<<< HEAD
 #    pull_request:
 #        branches:
 #          - main
@@ -20,6 +21,38 @@ on:
 #            - 'PrivateEndpoint/module.bicep'
 #            - 'KeyVaultRBAC/module.bicep'
 #            - 'utilities.bicep'
+=======
+        inputs:
+            output_format:
+                required: true
+                type: choice
+                options:
+                    - None
+                    - Yaml
+                    - Json
+                    - Csv
+                    - Markdown
+                    - Sarif
+                default: None
+    pull_request:
+        branches:
+          - main
+        paths:
+            - 'KeyVault/**'
+            - '.github/workflows/key-vault.yml'
+            - 'PrivateEndpoint/module.bicep'
+            - 'KeyVaultRBAC/module.bicep'
+            - 'utilities.bicep'
+    push:
+        branches:
+            - main
+        paths:
+            - 'KeyVault/**'
+            - '.github/workflows/key-vault.yml'
+            - 'PrivateEndpoint/module.bicep'
+            - 'KeyVaultRBAC/module.bicep'
+            - 'utilities.bicep'
+>>>>>>> 3fb24bf (Updated Bicep publish workflow and key vault publish module yaml)
 jobs:
     key-vault:
         permissions:
@@ -34,3 +67,4 @@ jobs:
             bicep-file-path: ./KeyVault/
             registry-name: crmahi
             registry-path: key-vault/vault:1.0
+            output-format: ${{ inputs.output_format }}
