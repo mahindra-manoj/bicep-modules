@@ -56,10 +56,6 @@ param roleAssignments RoleAssignment[]?
 @description('Optional. Virtual Network rules to be applied to the resource so that the resources within the subnet can access the resource via Public network access using Service endpoint.')
 param virtualNetworkRules ResourceFirewallRules?
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> b7cdcae (Updated.)
 var defaultRoleAssignment object[] = [
   {
     principalName: deployer().userPrincipalName
@@ -68,11 +64,6 @@ var defaultRoleAssignment object[] = [
   }
 ]
 
-<<<<<<< HEAD
-=======
->>>>>>> 05028f2 (Commit changes made to bicep modules)
-=======
->>>>>>> b7cdcae (Updated.)
 resource dns_zone 'Microsoft.Network/privateDnsZones@2024-06-01' existing = if (privateEndpoint != null) {
   name: 'privatelink.vaultcore.azure.net'
   scope: resourceGroup()
