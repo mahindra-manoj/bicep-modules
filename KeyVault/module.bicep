@@ -64,7 +64,7 @@ var defaultRoleAssignment object[] = [
   }
 ]
 
-resource dns_zone 'Microsoft.Network/privateDnsZones@2024-06-01' existing = if (privateEndpoint != null) {
+resource dns_zone 'Microsoft.Network/privateDnsZones@2024-06-01' existing = if (!empty( privateEndpoint ?? {})) {
   name: 'privatelink.vaultcore.azure.net'
   scope: resourceGroup()
 }
@@ -90,7 +90,7 @@ resource kv 'Microsoft.KeyVault/vaults@2025-05-01' = {
     enablePurgeProtection: enablePurgeProtection ? true : null
     enableRbacAuthorization: enableRbacAuth
     tenantId: subscription().tenantId
-    publicNetworkAccess: (!empty(privateEndpoint) && empty(ipRules) && empty(virtualNetworkRules))
+    publicNetworkAccess: !empty(privateEndpoint) && (empty(ipRules) && empty(virtualNetworkRules))
       ? 'Disabled'
       : 'Enabled'
     accessPolicies: [
@@ -134,7 +134,9 @@ module pe '../PrivateEndpoint/module.bicep' = if (privateEndpoint != null) {
     privateLinkServiceId: kv.id
     subnetName: privateEndpoint.?subnetName!
     tags: tags
-    privateDnsZoneId: dns_zone.?id!
+    privateDnsZoneIds: [
+      dns_zone.?id!
+    ]
     vnetName: privateEndpoint.?vnetName!
     vnetRGName: privateEndpoint.?vnetRGName
   }

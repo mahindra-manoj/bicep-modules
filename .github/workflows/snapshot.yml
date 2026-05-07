@@ -43,9 +43,9 @@ jobs:
                       Write-Host "OVERWRITE: $param"
                       bicep snapshot $param --mode overwrite
                       if ($LASTEXITCODE -ne 0) { $failed = $true; return }
+                      git add $snapshot
                   }
               }
-          git add $snapshot
           git commit -m "chore: add bicep snapshots"
           git push origin "HEAD:$env:GITHUB_HEAD_REF"
           if ($failed) { exit 1 }
