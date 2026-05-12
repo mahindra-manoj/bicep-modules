@@ -55,6 +55,7 @@ output clientId string = appreg.appId
 
 output objectId string = appreg.id
 
+#disable-next-line outputs-should-not-contain-secrets
 output clientsecret string = !empty(clientSecretName!) ? appreg.passwordCredentials[0].secretText : ''
 
 output varResourceAccess array = resourceAccess

@@ -37,9 +37,8 @@ param ipRules string[]?
 @description('Optional. Kind of the Cognitive Services account. Use \'Get-AzCognitiveServicesAccountSku\' to determine a valid combinations of \'kind\' and \'SKU\' for your Azure region. Defaults to `AIServices`.')
 @allowed([
   'AIServices'
-  'AnomalyDetector'
-  'CognitiveServices'
   'ComputerVision'
+  'CognitiveServices'
   'ContentModerator'
   'ContentSafety'
   'ConversationalLanguageUnderstanding'
@@ -114,7 +113,22 @@ param userOwnedStorageAccounts resourceInput<'Microsoft.CognitiveServices/accoun
 @description('Optional. List of Virtual networks that can access the resource using Service endpoints over Microsoft backbone network.')
 param virtualNetworkRules VirtualNetworkRules?
 
-var resourceName string = nameBuilder('foundryAccount', nameSuffix)
+var resourceName string = nameBuilder(resourceType[kind], nameSuffix)
+
+var resourceType object = {
+  AIServices: 'foundryAccount'
+  CognitiveServices: 'foundryTools'
+  ComputerVision: 'computerVision'
+  ContentModerator: 'contentModerator'
+  ContentSafety: 'contentSafety'
+  FormRecognizer: 'documentIntelligence'
+  Face: 'faceAPI'
+  HealthInsights: 'healthInsights'
+  ImmersiveReader: 'immersiveReader'
+  Language: 'languageService'
+  Speech: 'speechService'
+  Translator: 'translator'
+}
 
 resource credential_kv 'Microsoft.KeyVault/vaults@2025-05-01' existing = if (!empty(credentialStorage ?? {})) {
   name: credentialStorage.?keyVaultName ?? 'foobar'
@@ -229,11 +243,13 @@ resource aif 'Microsoft.CognitiveServices/accounts@2025-12-01' = {
     name: sku
   }
   properties: {
-    allowProjectManagement: false
+    allowProjectManagement: kind == 'AIServices'
+      ? true
+      : null
     customSubDomainName: resourceName
     disableLocalAuth: disableLocalAuth
     networkAcls: {
-      bypass: 'AzureServices'
+      bypass: kind == 'AIServices' && (!empty(ipRules) || !empty(virtualNetworkRules)) ? 'AzureServices' : null
       defaultAction: !empty(ipRules) || !empty(virtualNetworkRules) ? 'Deny' : 'Allow'
       ipRules: [
         for each in ipRules ?? []: {

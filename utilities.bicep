@@ -566,6 +566,18 @@ type VirtualNetworkPeering = {
 
 @description('Custom data type used by parameter `resourceType` in the the name Builder function to develop naming prefix accordingly. The function can only be used with Allowed resource types to generate name based on Azure WAF/CAF principles.')
 type ResourceType =
+  | 'azureOpenAIService'
+  | 'foundryTools'
+  | 'foundryHubProject'
+  | 'computerVision'
+  | 'contentModerator'
+  | 'contentSafety'
+  | 'healthInsights'
+  | 'immersiveReader'
+  | 'languageService'
+  | 'speechService'
+  | 'translator'
+  | 'faceAPI'
   | 'containerApp'
   | 'containerAppEnvironment'
   | 'containerRegistry'
@@ -677,6 +689,17 @@ type ResourceType =
   | 'virtualDesktopScalingPlan'
 
 var resourceNamePrefixMap object = {
+  foundryTools: 'ais'
+  computerVision: 'cv'
+  contentModerator: 'cm'
+  contentSafety: 'cs'
+  documentIntelligence: 'di'
+  faceAPI: 'face'
+  healthInsights: 'hi'
+  immersiveReader: 'ir'
+  languageService: 'lang'
+  speechService: 'spch'
+  translator: 'trsl'
   containerApp: 'ca'
   containerAppEnvironment: 'cae'
   containerRegistry: 'cr'
@@ -786,6 +809,7 @@ var resourceNamePrefixMap object = {
   virtualDesktopApplicationGroup: 'vdag'
   virtualDesktopWorksapce: 'vdws'
   virtualDesktopScalingPlan: 'vdscaling'
+
 }
 
 @export()
