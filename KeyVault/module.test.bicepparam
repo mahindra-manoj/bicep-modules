@@ -2,8 +2,9 @@ using './module.bicep'
 
 // Test param file to scan the module using PSRules with default options
 
-param nameSuffix = 'mahi-foobar'
+param nameSuffix = 'mahi-foobarr'
 param sku = 'standard'
+param enablePurgeProtection = false
 
 /*
 // Optional.

@@ -3,33 +3,10 @@ metadata name = 'Private DNS Zone bicep module.'
 
 metadata description = 'This module helps create a Private DNS zone resource and links the virtual networks with the resource to successfully resolve the private endpoints for the specific resource type.'
 
-import { VirtualNetwork } from '../utilities.bicep'
+import { PrivateDNSZone,VirtualNetwork } from '../utilities.bicep'
 
-@allowed([
-  'privatelink.azconfig.io'
-  'privatelink.azurewebsites.net'
-  'privatelink.azurecr.io'
-  #disable-next-line no-hardcoded-env-urls
-  'privatelink.blob.core.windows.net'
-  'privatelink.cosmos.azure.com'
-  #disable-next-line no-hardcoded-env-urls
-  'privatelink.database.windows.net'
-  #disable-next-line no-hardcoded-env-urls
-  'privatelink.file.core.windows.net'
-  #disable-next-line no-hardcoded-env-urls
-  'privatelink.queue.core.windows.net'
-  #disable-next-line no-hardcoded-env-urls
-  'privatelink.table.core.windows.net'
-  'privatelink.servicebus.windows.net'
-  'privatelink.vaultcore.azure.net'
-  'privatelink.redis.cache.windows.net'
-  'privatelink.search.windows.net'
-  'privatelink.datfactory.azure.net'
-  'privatelink.eventgrid.azure.net'
-  'privatelink.eventhub.azure.net'
-])
 @description('Name of the Private DNS Zone to be created.')
-param name string
+param name PrivateDNSZone
 
 @description('Optional. Tags to be applied to the Private DNS Zone resource,')
 param tags object = {}

@@ -3,6 +3,23 @@ metadata description = '''
   This module provides you with all the custom data types and functions that are being imported within the Bicep modules. You can also import them to your own Bicep files. The main purpose of this module is to avoid code duplication and provide a single source of truth for all the custom data types and functions used within the innersource Bicep modules.
 '''
 
+// ========================= //
+//   Virtual Network Rules   //
+// ========================= //
+
+@export()
+@description('Virtual Network rules.')
+type VirtualNetworkRules = {
+  @description('Name of the Virtual Network to be whitelisted.')
+  vnetName: string
+  @description('Name of the subnet to be whitelisted.')
+  subnetName: string
+  @description('Optional. RG where the Virtual network resides. Defaults to the resource group where the resource on which the VNET rules are being created.')
+  vnetRGName: string?
+  @description('Optional.GUID of the Subscription where the Virtual network resides. Defaults to the subscription where the resource on which the VNET rules are being created.')
+  vnetSubscriptionId: resourceInput<'Microsoft.Subscription/aliases@2025-11-01-preview'>.properties.subscriptionId?
+}[]
+
 // =========================  //
 // Private Endpoint Config    //
 // ========================  //
@@ -549,6 +566,18 @@ type VirtualNetworkPeering = {
 
 @description('Custom data type used by parameter `resourceType` in the the name Builder function to develop naming prefix accordingly. The function can only be used with Allowed resource types to generate name based on Azure WAF/CAF principles.')
 type ResourceType =
+  | 'azureOpenAIService'
+  | 'foundryTools'
+  | 'foundryHubProject'
+  | 'computerVision'
+  | 'contentModerator'
+  | 'contentSafety'
+  | 'healthInsights'
+  | 'immersiveReader'
+  | 'languageService'
+  | 'speechService'
+  | 'translator'
+  | 'faceAPI'
   | 'containerApp'
   | 'containerAppEnvironment'
   | 'containerRegistry'
@@ -660,6 +689,17 @@ type ResourceType =
   | 'virtualDesktopScalingPlan'
 
 var resourceNamePrefixMap object = {
+  foundryTools: 'ais'
+  computerVision: 'cv'
+  contentModerator: 'cm'
+  contentSafety: 'cs'
+  documentIntelligence: 'di'
+  faceAPI: 'face'
+  healthInsights: 'hi'
+  immersiveReader: 'ir'
+  languageService: 'lang'
+  speechService: 'spch'
+  translator: 'trsl'
   containerApp: 'ca'
   containerAppEnvironment: 'cae'
   containerRegistry: 'cr'
@@ -769,6 +809,7 @@ var resourceNamePrefixMap object = {
   virtualDesktopApplicationGroup: 'vdag'
   virtualDesktopWorksapce: 'vdws'
   virtualDesktopScalingPlan: 'vdscaling'
+
 }
 
 @export()
@@ -803,3 +844,56 @@ func nameBuilder(resourceType ResourceType, suffix string) string =>
                         ? fail('Container registry name exceeds 50 characters after removing hyphens if any. Choose the name suffix accordingly.')
                         : toLower(replace('${resourceNamePrefixMap[resourceType]}${suffix}', '-', ''))
                 : toLower('${resourceNamePrefixMap[resourceType]}-${suffix}')
+
+// ============================================ //
+//                Private DNS Zones             //
+// =========================================== //
+
+@export()
+type PrivateDNSZone =
+  | 'privatelink.azconfig.io'
+  | 'privatelink.azurewebsites.net'
+  | 'privatelink.azurecr.io'
+  | 'privatelink.blob.core.windows.net'
+  | 'privatelink.cognitiveservices.azure.com'
+  | 'privatelink.cosmos.azure.com'
+  | 'privatelink.database.windows.net'
+  | 'privatelink.datfactory.azure.net'
+  | 'privatelink.eventgrid.azure.net'
+  | 'privatelink.eventhub.azure.net'
+  | 'privatelink.file.core.windows.net'
+  | 'privatelink.openai.azure.com'
+  | 'privatelink.queue.core.windows.net'
+  | 'privatelink.table.core.windows.net'
+  | 'privatelink.servicebus.windows.net'
+  | 'privatelink.services.ai.azure.com'
+  | 'privatelink.vaultcore.azure.net'
+  | 'privatelink.redis.cache.windows.net'
+  | 'privatelink.search.windows.net'
+
+// ============================================ //
+//                Managed Identity Type        //
+// =========================================== //
+
+@export()
+@discriminator('type')
+@description('Managed Identity type')
+type Identity = SystemAssignedIdentity | UserAssignedIdentity | SystemAndUserAssignedIdentity
+
+type SystemAssignedIdentity = {
+  type: 'SystemAssigned'
+}
+
+type UserAssignedIdentity = {
+  type: 'UserAssigned'
+  userAssignedIdentities: {
+    *: string
+  }
+}
+
+type SystemAndUserAssignedIdentity = {
+  type: 'SystemAssigned,UserAssigned'
+  userAssignedIdentities: {
+    *: string
+  }
+}

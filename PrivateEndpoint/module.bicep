@@ -3,7 +3,7 @@ metadata name = 'Private endpoint bicep module'
 
 metadata description = 'This module automates creation of the private endpoint for the supported resource types.'
 
-import {nameBuilder} from '../utilities.bicep'
+import {nameBuilder, PrivateDNSZone} from '../utilities.bicep'
 
 @description('Target sub-resource of the resource type for which the private endpoint will need to be created.')
 param groupId string
@@ -14,8 +14,11 @@ param location string = resourceGroup().location
 @description('Name suffix of the private endpoint. \'pe-\' gets added as the prefix.')
 param nameSuffix string
 
-@description('Resource Id of the private dns zone.')
-param privateDnsZoneId string
+@description('''
+- List of the Private DNS zone resource Ids private endpoint needs to register with.
+- For example, for key vault resource, the value should be: ['/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/{FOO_BAR}/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net']
+''')
+param privateDnsZoneIds string[]
 
 @description('Target resource id for which the private endpoint needs to be configured.')
 param privateLinkServiceId string
@@ -66,11 +69,10 @@ resource pe 'Microsoft.Network/privateEndpoints@2025-05-01' = {
   resource peDnsZone 'privateDnsZoneGroups' = {
     name: 'default'
     properties: {
-      privateDnsZoneConfigs: [
-        {
-          name: 'registered_via_bicepmodule'
+      privateDnsZoneConfigs: [ for (each, i) in privateDnsZoneIds: {
+          name: 'registered_via_bicepmodule_${i}'
           properties: {
-            privateDnsZoneId: privateDnsZoneId
+            privateDnsZoneId: each
           }
         }
       ]
