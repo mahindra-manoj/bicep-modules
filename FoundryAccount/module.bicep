@@ -128,6 +128,7 @@ var resourceType object = {
   Language: 'languageService'
   Speech: 'speechService'
   Translator: 'translator'
+  OpenAI: 'azureOpenAIService'
 }
 
 resource credential_kv 'Microsoft.KeyVault/vaults@2025-05-01' existing = if (!empty(credentialStorage ?? {})) {
