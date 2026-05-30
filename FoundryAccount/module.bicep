@@ -302,3 +302,7 @@ type Connections = {
   name: string
   properties: resourceInput<'Microsoft.CognitiveServices/accounts/connections@2025-12-01'>.properties
 }[]
+
+output name string = aif.name
+
+output id string = aif.id

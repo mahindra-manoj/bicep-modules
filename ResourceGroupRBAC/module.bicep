@@ -17,10 +17,7 @@ param roleAssignments RoleAssignment[]
 // =============================== //
 
 @description('Filter role assignments to separate the elements of an array with principalName.')
-var filteredRoleAssignments = filter(
-  roleAssignments,
-  each => empty(each.?principalId ?? '')
-)
+var filteredRoleAssignments = filter(roleAssignments, each => empty(each.?principalId ?? ''))
 
 @description('Unique principal names if the principalName is specified multiple times.')
 var uniqueNames = union(map(filteredRoleAssignments, each => each.principalName!), [])
@@ -47,14 +44,21 @@ module entraidobject '../EntraIDObject/module.bicep' = [
 // Create role assignments
 resource rg_role_assignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [
   for (each, i) in roleAssignments: {
-    name: guid(subscription().subscriptionId, each.roleName, each.?principalId ?? each.?principalName ?? 'foobar')
+    name: !empty(each.?principalId ?? '') && !empty(each.?principalName ?? '')
+      ? fail('Only one of principalId or principalName can be specified.')
+      : empty(each.?principalId ?? '') && empty(each.?principalName ?? '')
+          ? fail('Either principalId or principalName must be specified.')
+          : guid(subscription().subscriptionId, each.roleName, each.?principalId ?? each.?principalName)
     scope: resourceGroup()
     properties: {
       principalId: !empty(each.?principalId ?? '')
         ? each.principalId!
         : entraidobject[indexOf(uniqueNames, each.principalName!)].outputs.id
-      roleDefinitionId: roleDefinitions(each.roleName).id//roleDefinitionId[each.?roleDefinitionName]
+      roleDefinitionId: roleDefinitions(each.roleName).id //roleDefinitionId[each.?roleDefinitionName]
       principalType: each.principalType
+      condition: each.?condition
+      conditionVersion: each.?conditionVersion
+      description: each.?description
     }
   }
 ]
