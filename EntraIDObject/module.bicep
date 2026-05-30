@@ -93,7 +93,7 @@ resource dscript 'Microsoft.Resources/deploymentScripts@2023-08-01' = /*if (prin
   properties: {
     azPowerShellVersion: '15.3'
     retentionInterval: 'PT1H'
-    timeout: 'PT1H'
+    timeout: 'PT30M'
     scriptContent: '''
       param(
         [string]$PrincipalName,
