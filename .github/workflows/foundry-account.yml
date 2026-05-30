@@ -1,0 +1,32 @@
+name: Publish Foundry Account Bicep module
+
+on:
+    workflow_dispatch:
+#    pull_request:
+#        branches:
+#            - main
+#        paths:
+#            - 'FoundryAccount/**'
+#            - 'utilities.bicep'
+#            - '.github/workflows/foundry-account.yml'
+#    push:
+#        branches:
+#            - main
+#        paths:
+#            - 'FoundryAccount/**'
+#            - 'utilities.bicep'
+#            - '.github/workflows/foundry-account.yml'
+jobs:
+    foundry-account:
+        permissions:
+            contents: read
+            id-token: write
+        uses: ./.github/workflows/bicep-publish.yml
+        secrets:
+            azure-client-id: ${{ secrets.ClIENT_ID }}
+            azure-tenant-id: ${{ secrets.TENANT_ID }}
+            azure-subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+        with:
+            bicep-file-path: FoundryAccount/
+            registry-name: crmahi
+            registry-path: foundry/account:1.0

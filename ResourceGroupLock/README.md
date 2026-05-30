@@ -41,7 +41,7 @@ This module applies CanNotDelete or ReadOnly locks at the resource group level t
 ### Example 1: Basic CanNotDelete lock
 
 ```bicep
-module resourceGroupLock 'br/public:avm/res/authorization/lock:<version>' = {
+module resourceGroupLock 'br:crmahi.azurecr.io/management/rg-lock:1.0' = {
   name: 'resourceGroupLockDeployment'
   params: {
     level: 'CanNotDelete'
@@ -54,7 +54,7 @@ module resourceGroupLock 'br/public:avm/res/authorization/lock:<version>' = {
 ### Example 2: ReadOnly lock with descriptive notes
 
 ```bicep
-module resourceGroupLock 'br/public:avm/res/authorization/lock:<version>' = {
+module resourceGroupLock 'br:crmahi.azurecr.io/management/rg-lock:1.0' = {
   name: 'resourceGroupLockDeployment'
   params: {
     level: 'ReadOnly'
@@ -67,7 +67,7 @@ module resourceGroupLock 'br/public:avm/res/authorization/lock:<version>' = {
 ### Example 3: Default CanNotDelete lock (minimal)
 
 ```bicep
-module resourceGroupLock 'br/public:avm/res/authorization/lock:<version>' = {
+module resourceGroupLock 'br:crmahi.azurecr.io/management/rg-lock:1.0' = {
   name: 'resourceGroupLockDeployment'
   params: {}
 }
@@ -76,7 +76,7 @@ module resourceGroupLock 'br/public:avm/res/authorization/lock:<version>' = {
 ### Example 4: Lock for sensitive resources
 
 ```bicep
-module resourceGroupLock 'br/public:avm/res/authorization/lock:<version>' = {
+module resourceGroupLock 'br:crmahi.azurecr.io/management/rg-lock:1.0' = {
   name: 'resourceGroupLockDeployment'
   params: {
     level: 'CanNotDelete'

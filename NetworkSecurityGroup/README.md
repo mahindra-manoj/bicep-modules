@@ -51,7 +51,7 @@ Each security rule object should include:
 ### Example 1: Basic NSG with HTTP/HTTPS rules
 
 ```bicep
-module nsg 'br/public:avm/res/network-security-group:<version>' = {
+module nsg 'br:crmahi.azurecr.io/network/nsg:1.0' = {
   name: 'nsgDeployment'
   params: {
     nameSuffix: 'web'
@@ -88,7 +88,7 @@ module nsg 'br/public:avm/res/network-security-group:<version>' = {
 ### Example 2: NSG with multiple ports and restricted source
 
 ```bicep
-module nsg 'br/public:avm/res/network-security-group:<version>' = {
+module nsg 'br:crmahi.azurecr.io/network/nsg:1.0' = {
   name: 'nsgDeployment'
   params: {
     nameSuffix: 'app'

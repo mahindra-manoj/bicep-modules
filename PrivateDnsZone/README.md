@@ -68,7 +68,7 @@ Common private DNS zones:
 ### Example 1: Basic Private DNS Zone with single VNet link
 
 ```bicep
-module privateDnsZone 'br/public:avm/res/network/private-dns-zone:<version>' = {
+module privateDnsZone 'br:crmahi.azurecr.io/network/private-dns-zone:1.0' = {
   name: 'privateDnsZoneDeployment'
   params: {
     name: 'privatelink.vaultcore.azure.net'
@@ -84,7 +84,7 @@ module privateDnsZone 'br/public:avm/res/network/private-dns-zone:<version>' = {
 ### Example 2: Private DNS Zone with multiple VNet links
 
 ```bicep
-module privateDnsZone 'br/public:avm/res/network/private-dns-zone:<version>' = {
+module privateDnsZone 'br:crmahi.azurecr.io/network/private-dns-zone:1.0' = {
   name: 'privateDnsZoneDeployment'
   params: {
     name: 'privatelink.database.windows.net'
@@ -114,7 +114,7 @@ module privateDnsZone 'br/public:avm/res/network/private-dns-zone:<version>' = {
 ### Example 3: Private DNS Zone for Key Vault
 
 ```bicep
-module privateDnsZone 'br/public:avm/res/network/private-dns-zone:<version>' = {
+module privateDnsZone 'br:crmahi.azurecr.io/network/private-dns-zone:1.0' = {
   name: 'privateDnsZoneDeployment'
   params: {
     name: 'privatelink.vaultcore.azure.net'
@@ -133,7 +133,7 @@ module privateDnsZone 'br/public:avm/res/network/private-dns-zone:<version>' = {
 ### Example 4: Private DNS Zone in different subscription
 
 ```bicep
-module privateDnsZone 'br/public:avm/res/network/private-dns-zone:<version>' = {
+module privateDnsZone 'br:crmahi.azurecr.io/network/private-dns-zone:1.0' = {
   name: 'privateDnsZoneDeployment'
   params: {
     name: 'privatelink.blob.core.windows.net'

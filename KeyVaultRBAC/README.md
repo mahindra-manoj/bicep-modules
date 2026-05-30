@@ -55,7 +55,7 @@ Each role assignment in the array can include:
 ### Example 1: Assign role to Entra ID user
 
 ```bicep
-module kvRbac 'br/public:avm/res/key-vault/rbac:<version>' = {
+module kvRbac 'br:crmahi.azurecr.io/key-vault/rbac:1.0' = {
   name: 'kvRbacDeployment'
   params: {
     keyVaultName: 'my-keyvault'
@@ -73,7 +73,7 @@ module kvRbac 'br/public:avm/res/key-vault/rbac:<version>' = {
 ### Example 2: Assign multiple roles to different principals
 
 ```bicep
-module kvRbac 'br/public:avm/res/key-vault/rbac:<version>' = {
+module kvRbac 'br:crmahi.azurecr.io/key-vault/rbac:1.0' = {
   name: 'kvRbacDeployment'
   params: {
     keyVaultName: 'my-keyvault'
@@ -101,7 +101,7 @@ module kvRbac 'br/public:avm/res/key-vault/rbac:<version>' = {
 ### Example 3: Assign role using explicit principal ID
 
 ```bicep
-module kvRbac 'br/public:avm/res/key-vault/rbac:<version>' = {
+module kvRbac 'br:crmahi.azurecr.io/key-vault/rbac:1.0' = {
   name: 'kvRbacDeployment'
   params: {
     keyVaultName: 'my-keyvault'

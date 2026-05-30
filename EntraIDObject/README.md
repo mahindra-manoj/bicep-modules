@@ -43,7 +43,7 @@ This module retrieves the object ID of an Entra ID group, user, or service princ
 ### Example 1: Basic usage - Retrieve user principal ID
 
 ```bicep
-module entraIdObject 'br/public:avm/res/entra-id-object/principal-id:<version>' = {
+module entraIdObject 'br:crmahi.azurecr.io/entraid/objectid:1.0' = {
   name: 'entraIdObjectDeployment'
   params: {
     principalName: 'user@example.com'
@@ -55,7 +55,7 @@ module entraIdObject 'br/public:avm/res/entra-id-object/principal-id:<version>' 
 ### Example 2: Retrieve group principal ID
 
 ```bicep
-module entraIdObject 'br/public:avm/res/entra-id-object/principal-id:<version>' = {
+module entraIdObject 'br:crmahi.azurecr.io/entraid/objectid:1.0' = {
   name: 'entraIdObjectDeployment'
   params: {
     principalName: 'MySecurityGroup'
@@ -68,7 +68,7 @@ module entraIdObject 'br/public:avm/res/entra-id-object/principal-id:<version>' 
 ### Example 3: Service principal lookup with custom managed identity
 
 ```bicep
-module entraIdObject 'br/public:avm/res/entra-id-object/principal-id:<version>' = {
+module entraIdObject 'br:crmahi.azurecr.io/entraid/objectid:1.0' = {
   name: 'entraIdObjectDeployment'
   params: {
     principalName: 'MyManagedIdentity'

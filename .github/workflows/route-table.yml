@@ -1,0 +1,32 @@
+name: Publish Route Table Bicep module
+
+on:
+    workflow_dispatch:
+#    pull_request:
+#        branches:
+#            - main
+#        paths:
+#            - 'RouteTable/**'
+#            - 'utilities.bicep'
+#            - '.github/workflows/route-table.yml'
+#    push:
+#        branches:
+#            - main
+#        paths:
+#            - 'RouteTable/**'
+#            - 'utilities.bicep'
+#            - '.github/workflows/route-table.yml'
+jobs:
+    route-table:
+        permissions:
+            contents: read
+            id-token: write
+        uses: ./.github/workflows/bicep-publish.yml
+        secrets:
+            azure-client-id: ${{ secrets.ClIENT_ID }}
+            azure-tenant-id: ${{ secrets.TENANT_ID }}
+            azure-subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+        with:
+            bicep-file-path: RouteTable/
+            registry-name: crmahi
+            registry-path: network/route-table:1.0

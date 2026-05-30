@@ -1,0 +1,32 @@
+name: Publish Resource Group RBAC Bicep module
+
+on:
+    workflow_dispatch:
+#    pull_request:
+#        branches:
+#            - main
+#        paths:
+#            - 'ResourceGroupRBAC/**'
+#            - 'utilities.bicep'
+#            - '.github/workflows/resource-group-rbac.yml'
+#    push:
+#        branches:
+#            - main
+#        paths:
+#            - 'ResourceGroupRBAC/**'
+#            - 'utilities.bicep'
+#            - '.github/workflows/resource-group-rbac.yml'
+jobs:
+    resource-group-rbac:
+        permissions:
+            contents: read
+            id-token: write
+        uses: ./.github/workflows/bicep-publish.yml
+        secrets:
+            azure-client-id: ${{ secrets.ClIENT_ID }}
+            azure-tenant-id: ${{ secrets.TENANT_ID }}
+            azure-subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+        with:
+            bicep-file-path: ResourceGroupRBAC/
+            registry-name: crmahi
+            registry-path: management/rg-rbac:1.0

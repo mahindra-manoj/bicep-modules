@@ -65,7 +65,7 @@ This module automates the creation of private endpoints for Azure resource types
 ### Example 1: Private Endpoint for Key Vault
 
 ```bicep
-module privateEndpoint 'br/public:avm/res/network/private-endpoint:<version>' = {
+module privateEndpoint 'br:crmahi.azurecr.io/network/private-endpoint:1.0' = {
   name: 'privateEndpointDeployment'
   params: {
     nameSuffix: 'keyvault'
@@ -83,7 +83,7 @@ module privateEndpoint 'br/public:avm/res/network/private-endpoint:<version>' = 
 ### Example 2: Private Endpoint for Storage Blob
 
 ```bicep
-module privateEndpoint 'br/public:avm/res/network/private-endpoint:<version>' = {
+module privateEndpoint 'br:crmahi.azurecr.io/network/private-endpoint:1.0' = {
   name: 'privateEndpointDeployment'
   params: {
     nameSuffix: 'storage'
@@ -104,7 +104,7 @@ module privateEndpoint 'br/public:avm/res/network/private-endpoint:<version>' = 
 ### Example 3: Private Endpoint in different resource group
 
 ```bicep
-module privateEndpoint 'br/public:avm/res/network/private-endpoint:<version>' = {
+module privateEndpoint 'br:crmahi.azurecr.io/network/private-endpoint:1.0' = {
   name: 'privateEndpointDeployment'
   params: {
     nameSuffix: 'database'
@@ -124,7 +124,7 @@ module privateEndpoint 'br/public:avm/res/network/private-endpoint:<version>' = 
 ### Example 4: Private Endpoint with multiple DNS zones
 
 ```bicep
-module privateEndpoint 'br/public:avm/res/network/private-endpoint:<version>' = {
+module privateEndpoint 'br:crmahi.azurecr.io/network/private-endpoint:1.0' = {
   name: 'privateEndpointDeployment'
   params: {
     nameSuffix: 'cosmosdb'

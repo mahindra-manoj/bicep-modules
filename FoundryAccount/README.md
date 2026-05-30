@@ -51,7 +51,7 @@ This module deploys a Microsoft Foundry (Azure AI Services) account with support
 ### Example 1: Basic Foundry account deployment
 
 ```bicep
-module foundryAccount 'br/public:avm/res/cognitive-services/account:<version>' = {
+module foundryAccount 'br:crmahi.azurecr.io/foundry/account:1.0' = {
   name: 'foundryAccountDeployment'
   params: {
     nameSuffix: 'myai'
@@ -65,7 +65,7 @@ module foundryAccount 'br/public:avm/res/cognitive-services/account:<version>' =
 ### Example 2: Foundry account with managed identity and private endpoint
 
 ```bicep
-module foundryAccount 'br/public:avm/res/cognitive-services/account:<version>' = {
+module foundryAccount 'br:crmahi.azurecr.io/foundry/account:1.0' = {
   name: 'foundryAccountDeployment'
   params: {
     nameSuffix: 'myai'
@@ -87,7 +87,7 @@ module foundryAccount 'br/public:avm/res/cognitive-services/account:<version>' =
 ### Example 3: Foundry account with Application Insights and Key Vault
 
 ```bicep
-module foundryAccount 'br/public:avm/res/cognitive-services/account:<version>' = {
+module foundryAccount 'br:crmahi.azurecr.io/foundry/account:1.0' = {
   name: 'foundryAccountDeployment'
   params: {
     nameSuffix: 'myai'

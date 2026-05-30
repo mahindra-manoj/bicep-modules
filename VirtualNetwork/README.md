@@ -51,7 +51,7 @@ This module deploys a Virtual Network with subnets, optional peering, DDoS prote
 ### Example 1: Basic Virtual Network with subnets
 
 ```bicep
-module vnet 'br/public:avm/res/network/virtual-network:<version>' = {
+module vnet 'br:crmahi.azurecr.io/network/vnet:1.0' = {
   name: 'vnetDeployment'
   params: {
     nameSuffix: 'prod'

@@ -51,7 +51,7 @@ This module deploys an Azure Key Vault with RBAC as the authorization model, sup
 ### Example 1: Basic Key Vault with RBAC
 
 ```bicep
-module keyVault 'br/public:avm/res/key-vault/vault:<version>' = {
+module keyVault 'br:crmahi.azurecr.io/key-vault/vault:1.0' = {
   name: 'keyVaultDeployment'
   params: {
     nameSuffix: 'myapps'
@@ -65,7 +65,7 @@ module keyVault 'br/public:avm/res/key-vault/vault:<version>' = {
 ### Example 2: Key Vault with private endpoint
 
 ```bicep
-module keyVault 'br/public:avm/res/key-vault/vault:<version>' = {
+module keyVault 'br:crmahi.azurecr.io/key-vault/vault:1.0' = {
   name: 'keyVaultDeployment'
   params: {
     nameSuffix: 'secure'
@@ -83,7 +83,7 @@ module keyVault 'br/public:avm/res/key-vault/vault:<version>' = {
 ### Example 3: Key Vault with firewall rules
 
 ```bicep
-module keyVault 'br/public:avm/res/key-vault/vault:<version>' = {
+module keyVault 'br:crmahi.azurecr.io/key-vault/vault:1.0' = {
   name: 'keyVaultDeployment'
   params: {
     nameSuffix: 'restricted'
@@ -104,7 +104,7 @@ module keyVault 'br/public:avm/res/key-vault/vault:<version>' = {
 ### Example 4: Premium Key Vault with custom retention
 
 ```bicep
-module keyVault 'br/public:avm/res/key-vault/vault:<version>' = {
+module keyVault 'br:crmahi.azurecr.io/key-vault/vault:1.0' = {
   name: 'keyVaultDeployment'
   params: {
     nameSuffix: 'premium'
